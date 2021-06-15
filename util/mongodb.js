@@ -40,7 +40,7 @@ export async function connectToDatabase() {
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
       return {
         client,
-        database: client.db(MONGODB_DB),
+        db: client.db(MONGODB_DB),
       }
     })
   }
