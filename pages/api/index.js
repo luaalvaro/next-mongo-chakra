@@ -15,16 +15,23 @@ export default async (req, res) => {
         return res.status(200).json({ message: 'Sorry, this token is not valid' })
     }
 
+    // Token válido
+
     const db = await connectDatabase()
 
     if (!db) {
         return res.status(200).json({ message: 'Sorry, Database connection error' })
     }
 
+    // Conexão com o banco de dados estabelecida com sucesso
+
     const data = await db
         .collection('index')
         .find({})
         .toArray()
+
+    // Processamento da Request Finalizado
+    // Devolvendo a resposta final de sucesso
 
     res.status(200).json({ status: 1, message: 'Sucess', data })
 }
