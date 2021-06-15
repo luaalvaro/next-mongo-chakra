@@ -11,6 +11,10 @@ export function tokenIsValid(token) {
 }
 
 export async function connectDatabase() {
-    const { database } = await connectToDatabase();
-    return database
+    try {
+        const { db } = await connectToDatabase();
+        return db
+    } catch (error) {
+        return 0
+    }
 }

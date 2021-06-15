@@ -6,19 +6,25 @@ export default async (req, res) => {
         return res.status(200).json({ message: 'Sorry, this method type is not accepted' })
     }
 
-    let database = null;
-
-    try {
-        // Conexão com o MongoDB
-        database = await connectDatabase();
-    } catch (error) {
-        return res.status(200).json({ message: 'Please, try again. Not possible connect to database' })
-    }
-
     // Método POST reconhecido
     // Verificar se o token é válido
 
     const result = tokenIsValid(req.body.token)
 
-    res.status(200).json({ status: result, message: 'Sucess', data: [{ name: 'Luã Álvaro' }] })
+    if (!result) {
+        return res.status(200).json({ message: 'Sorry, this token is not valid' })
+    }
+
+    const db = await connectDatabase()
+
+    if (!db) {
+        return res.status(200).json({ message: 'Sorry, Database connection error' })
+    }
+
+    const data = await db
+        .collection('index')
+        .find({})
+        .toArray()
+
+    res.status(200).json({ status: 1, message: 'Sucess', data })
 }
